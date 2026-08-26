@@ -1,0 +1,37 @@
+Facts Without Rules reproducibility code bundle
+
+Contents
+- dataset/scripts/: prompt builders, model runners, downstream evaluators, sigma judges, task-success judges, and experiment summarizers.
+- scripts/analysis/: statistical, robustness, annotation, qualitative-example, E9 corruption, and summary scripts.
+- dataset/data/build_*.py: legacy prompt-build helpers retained for compatibility.
+
+Excluded on purpose
+- No generated result files are included.
+- No CSV, JSON, JSONL, or Markdown result artifacts are included.
+- No API key values or institution-specific runner scripts are included.
+- No machine-specific user paths are included.
+- URLs are replaced with [URL].
+
+Expected inputs
+Place benchmark manifests and prompt files under dataset/data/ in a working checkout before running. This bundle intentionally does not include generated data/result artifacts.
+
+Environment variables
+- MODEL_KEY: set this in your shell for whichever model endpoint your runner uses. Do not store secret values in this folder.
+
+Representative commands
+Run prompts with the generic hosted-model runner:
+python3 dataset/scripts/run_openai_prompts.py --prompts dataset/data/bound_handoff_phase2_prompts.jsonl --output dataset/data/model_outputs_MODEL_phase2.jsonl --model MODEL_NAME --temperature 0.1
+
+Judge sigma and sigma_op:
+python3 dataset/scripts/judge_phase2_sigma.py --dataset dataset/data/bound_handoff_phase2.json --outputs dataset/data/model_outputs_MODEL_phase2.jsonl --judge-output dataset/data/judge_scores_MODEL_phase2_sigma.jsonl --summary-by-condition dataset/data/summary_MODEL_phase2_sigma_by_condition.csv --summary-by-surface dataset/data/summary_MODEL_phase2_sigma_by_surface.csv --summary-by-marker-category dataset/data/summary_MODEL_phase2_sigma_by_marker_category.csv --summary-by-domain dataset/data/summary_MODEL_phase2_sigma_by_domain.csv --judge-model JUDGE_MODEL --reasoning-effort minimal
+
+Evaluate downstream leakage:
+python3 dataset/scripts/evaluate_downstream_outputs.py dataset/data/bound_handoff_phase2.json dataset/data/model_outputs_MODEL_downstream.jsonl --output dataset/data/eval_MODEL_downstream.jsonl
+
+Additional analyses:
+python3 scripts/analysis/add_leakage_stats.py
+python3 scripts/analysis/sigma_weighting_robustness.py
+python3 scripts/analysis/summarize_qwen3_32b.py
+
+Notes
+Commands use relative paths only. Replace MODEL_NAME, JUDGE_MODEL, and MODEL placeholders with configured model identifiers. Use explicit overwrite flags only when intentionally regenerating outputs.
