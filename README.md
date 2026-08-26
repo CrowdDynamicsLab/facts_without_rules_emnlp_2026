@@ -187,17 +187,3 @@ will not reproduce exactly against different model snapshots; the qualitative
 finding to check is the `σ_b`/`σ_op` decoupling and the sharp L1→L2 transition in
 the marker-strength gradient.
 
-## Citation
-
-```bibtex
-@inproceedings{wang2026facts,
-  title     = {Facts Without Rules: Boundary Metadata Collapse in Multi-Agent LLM Handoffs},
-  author    = {Wang, Yian and Goyal, Agam and Chandrasekharan, Eshwar and Sundaram, Hari},
-  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2026},
-  year      = {2026}
-}
-```
-
-## License
-
-TODO: add a license file before release.
